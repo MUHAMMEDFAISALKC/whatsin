@@ -97,7 +97,7 @@ function sendMessage() {
     if (!!selectedChannel) {
         if (!!messagetext) {
             const message = {createdBy: "Faisal", createdOn: time, channel: selectedChannel.id, own: true, text: messagetext};
-            console.log("New message: ", message);
+            console.log("New message: ");
             mockMessages.push(message);
             //console.log("The following message was send: " +messageText); 
             //$("<div class='message outgoing-message'>").html(messageString).appendTo("#chat-area"); 
@@ -105,9 +105,11 @@ function sendMessage() {
             showMessages();
             displayChannels();
         } else {
+            document.getElementById("message-input").value = "";
             return;
         }
     } else {
+        document.getElementById("message-input").value = "";
         console.log("please select channel");
         return;
     } 
