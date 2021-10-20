@@ -97,7 +97,7 @@ function sendMessage() {
 
     if (!!selectedChannel) {
         if (!!messagetext) {
-            const message = {createdBy: , "Faisal", createdOn: time, channel: selectedChannel.id, own: true, text: messagetext};
+            const message = {createdBy: "Faisal", createdOn: time, channel: selectedChannel.id, own: true, text: messagetext};
             console.log("New message: ", message);
             mockMessages.push(message);
             //console.log("The following message was send: " +messageText); 
