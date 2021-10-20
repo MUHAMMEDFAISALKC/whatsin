@@ -90,23 +90,19 @@ function reset() {
 
 
 function sendMessage() {
-    const text = document.getElementById("message-input").value;
+    const 
+    const messagetext = document.getElementById("message-input").value;
     let date = new Date();
     let time = date.getDate()+'/'+ (date.getMonth()+ 1) +'/'+date.getFullYear();
 
     if (!!selectedChannel) {
-        if (!!text) {
-            const createdBy = "Faisal";
-            const createdOn = time;
-            const channel = selectedChannel.id;
-            const own = true;
-            const message = new Message(createdBy, createdOn, channel, own, text);
+        if (!!messagetext) {
+            const message = {createdBy: , "Faisal", createdOn: time, channel: selectedChannel.id, own: true, text: messagetext};
             console.log("New message: ", message);
-            selectedChannel.messages.push(message);
+            mockMessages.push(message);
             //console.log("The following message was send: " +messageText); 
             //$("<div class='message outgoing-message'>").html(messageString).appendTo("#chat-area"); 
             document.getElementById("message-input").value = "";
-            loadMessagesIntoChannel();
             showMessages();
             displayChannels();
         } else {
