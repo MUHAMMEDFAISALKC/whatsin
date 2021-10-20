@@ -1,6 +1,20 @@
+function Dates(dd, MM, yyyy, hh, mm,ss) {
+    this.dd = dd;
+    this.MM = MM,
+    this.yyyy = yyyy;
+    this.hh = hh;
+    this.mm = mm;
+    this.ss = ss;
+    this.fulldates = function () {
+        return this.dd+ '/' + this.MM + '/' + this.yyyy + ' ' + this.hh + ':' + this.mm + ':' + this.ss;
+    } 
+}
 const mockMessages = [ {
     createdBy: "Jack Blue",
-    createdOn: new Date('December 08, 2018 17:24:00'),
+    createdOn: function () { 
+        let value = new Dates(08, 12, 2018, 17, 24, 00);
+        return value.fulldates();
+    },
     channel: "000001",
     own: false,
     text: "how are you guys!"
@@ -8,7 +22,10 @@ const mockMessages = [ {
 
     {
     createdBy: "Jafer",
-    createdOn: new Date('December 09, 2018 18:24:00'),
+    createdOn: function () { 
+        let value = new Dates(09, 12, 2018, 18, 24, 00);
+        return value.fulldates();
+    },
     channel: "000002",
     own: false,
     text: "what about you!"
@@ -16,7 +33,10 @@ const mockMessages = [ {
 
     {
     createdBy: "Sajid",
-    createdOn: new Date('December 10, 2018 19:24:00'),
+    createdOn: function () { 
+        let value = new Dates(10, 12, 2018, 19, 24, 00);
+        return value.fulldates();
+    },
     channel: "000001",
     own: false,
     text: "well guys!"
@@ -24,7 +44,10 @@ const mockMessages = [ {
 
     {
     createdBy: "Faisal",
-    createdOn: new Date('December 11, 2018 20:24:00'),
+    createdOn: function () { 
+        let value = new Dates(11, 12, 2018, 20, 24, 00);
+        return value.fulldates();
+    },
     channel: "000001",
     own: true,
     text: "fine guys!"
@@ -32,7 +55,10 @@ const mockMessages = [ {
 
     {
     createdBy: "Javid",
-    createdOn: new Date('December 12, 2018 22:24:00'),
+    createdOn: function () { 
+        let value = new Dates(12, 12, 2018, 22, 24, 00);
+        return value.fulldates();
+    },
     channel: "000003",
     own: false,
     text: "i think everyone feeling good!"
@@ -46,3 +72,4 @@ function Message (createdBy, createdOn, channel, own, text ) {
     this.own = own;
     this.text = text;
 }
+
