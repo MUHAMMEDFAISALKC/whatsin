@@ -1,3 +1,5 @@
+
+
 // start the external action 
 // console log s app is live
 function init() {
@@ -61,7 +63,7 @@ function showMessages() {
                         </div>
                         <i class="material-icons">account_circle</i>
                     </div>
-                    <span class="timestamp">` + message.createdOn + `</span>`
+                    <span class="timestamp">` + message.createdOn() + `</span>`
                 //console.log(currentMessageHtmlString);
                 $('<div class="message outgoing-message">').html(currentMessageHtmlString).appendTo('#chat-area');
             } else {
@@ -73,7 +75,7 @@ function showMessages() {
                             <p>` + message.text + `</p>
                         </div>
                     </div>
-                    <span class="timestamp">` + message.createdOn + `</span>`
+                    <span class="timestamp">` + message.createdOn() + `</span>`
                 //console.log(currentMessageHtmlString);
                 $('<div class="message incoming-message">').html(currentMessageHtmlString).appendTo('#chat-area');
             }
@@ -86,13 +88,27 @@ function reset() {
     $('#chat-area').empty();
 }
 
+function Dates(dd, MM, yyyy, hh, mm,ss) {
+    this.dd = dd;
+    this.MM = MM,
+    this.yyyy = yyyy;
+    this.hh = hh;
+    this.mm = mm;
+    this.ss = ss;
+    this.fulldates = function () {
+        return this.dd+ '/' + this.MM + '/' + this.yyyy + ' ' + this.hh + ':' + this.mm + ':' + this.ss;
+    } 
+}
 
 
 
 function sendMessage() {
     const messagetext = document.getElementById("message-input").value;
-    let date = new Date();
-    let time = date.getDate()+'/'+ (date.getMonth()+ 1) +'/'+date.getFullYear();
+    let d = new Date();
+    let date = new Dates(d.getDate(), d.getMonth() + 1, d.getFullYear(), d.getHours(), d.getMinutes(), d.getSeconds());
+    let time = function () {
+        return date.fulldates();
+    }
 
     if (!!selectedChannel) {
         if (!!messagetext) {
