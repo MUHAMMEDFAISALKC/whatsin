@@ -90,7 +90,6 @@ function reset() {
 
 
 function sendMessage() {
-    const 
     const messagetext = document.getElementById("message-input").value;
     let date = new Date();
     let time = date.getDate()+'/'+ (date.getMonth()+ 1) +'/'+date.getFullYear();
