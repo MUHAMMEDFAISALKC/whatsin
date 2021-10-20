@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Whatsin|app </title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link rel="stylesheet" href="css/style.css"/>
+    </head>
+    <body onload="init()">
+        <section id="channel-area">
+            <div class="headbar">
+                <!-- head part -->
+                <img id="logo" alt="app logo" src="https://ip.lfe.mw.tum.de/sections/moocus.png">
+                <h1 id="app-title">whatsin | app</h1>
+            </div>
+            <a id="fab" class="fab">+</a>
+            <div id="channel-list-area">
+                <!-- fovourate channels-->
+                <h2 class="channel-head">Favourates</h2>
+                <ul class="channel-list" id="favorite-channels">
+                    <li id="channel1" onclick="switchChannel(channel1);" class="selected">
+                        <i class="material-icons">group</i>
+                        <span class="channel-name">MeetUp</span>
+                        <span class="timestamp">11:51</span>
+                    </li>
+                    <li id="channel2" onclick="switchChannel(channel2);">
+                        <i class="material-icons">group</i>
+                        <span class="channel-name">Octoberfest</span>
+                        <span class="timestamp">10:51</span>
+                    </li>
+                </ul>
+                 <!-- regular channels -->
+                <h2 class="channel-head">Regular</h2>
+                <ul class="channel-list" id="regular-channels">
+                    <li id="channel3" onclick="switchChannel(channel3);">
+                        <i class="material-icons">group</i>
+                        <span class="channel-name">WeatherChannel</span>
+                        <span class="timestamp">yesterday</span>
+                    </li>
+                    <li id="channel4" onclick="switchChannel(channel4);">
+                        <i class="material-icons">group</i>
+                        <span class="channel-name">SevenContinents</span>
+                        <span class="timestamp">23 May 2018</span>
+                    </li>
+                    <li id="channel5" onclick="switchChannel(channel5);">
+                        <i class="material-icons">group</i>
+                        <span class="channel-name">Dlc</span>
+                        <span class="timestamp">23 April 2018</span>
+                    </li>
+                </ul>
+            </div>   
+        </section>
+        <!-- message area -->
+        <section id="message-area">
+            <div class="headbar" id="message-area-header">
+                <h1 id="channelName"></h1>
+                <a class="material-icons button" id="favorite-button"></a>
+            </div>
+            <div id="chat-area">
+                <p id="select-channel">Select a channel to start massaging.</p>
+            </div>
+            <div id="input-area">
+                <a class="material-icons button" id="emoticon-button">insert_emoticon</a>
+                <!-- message typing area -->
+                <input id="message-input" name="message-input" placeholder="type your message" type="text" autocomplete="off" autofocus minlength="1" maxlength="500"/>
+                <!-- button to send message -->
+                <a class="material-icons button" id="send-button">send</a>
+            </div>
+            <div id="emoji-area">
+                <div id="emoji-header">
+                    <span>Emojis</span>
+                    <a class="material-icons button" id="close-emoticon-button">cancel</a>
+                </div>
+                <div id="emoji-list"></div>
+            </div>
+        </section>
+        <script src="js/main.js"></script>
+        <script src="js/messages.js"></script>
+        <script src="js/channels.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </body>
+</html>
