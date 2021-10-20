@@ -1,0 +1,234 @@
+*{
+    font-family: Roboto, Arial, sans-serif;
+    margin: 0px;
+    padding: 0px;
+
+}
+body {
+    width:100%;
+    height:100%;
+}
+section {
+    position: fixed;
+    top:0px;
+    height:100vh;
+}
+
+#channel-area {
+    width: 399px;
+    height: 100vh;
+    border-right: 1px solid rgb(199, 199, 199);
+    box-sizing: border-box;
+}
+
+#message-area {
+    width: calc(100% - 400px);
+    left: 400px;
+    box-sizing: border-box;
+}
+
+.headbar {
+    background-color:#eeeeee;;
+    color: #00838f;
+    padding: 0px 22px 0px 22px;
+    height: 66px;
+    line-height: 66px;
+}
+
+.fab {
+    position: absolute;
+    top:44px;
+    right:22px;
+    background-color: #00838f;
+    color:white;
+    height: 44px;
+    width: 44px;
+    line-height: 44px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px 0 #aaaaaa;
+    font-size: 36px;
+    text-align: center;
+    cursor: pointer;
+}
+#logo {
+    position:absolute;
+    left: 11px;
+    top: 11px;
+    border-radius: 10%;
+    background-color:#00838f;
+    height: 44px;
+}
+#app-title {
+    margin-left: 44px;
+    font-size: 18px;
+    color: #00838f;
+}
+#channel-list-area {
+    height: calc(100vh - 66px);
+    overflow-y:auto;
+}
+.channel-list li {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px;
+    height: 66px;
+    cursor: pointer;
+}
+.channel-head {
+    color: #00838f;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size:12px;
+    margin:22px 22px 11px 11px;
+}
+.channel-list li.selected{
+    background-color:#eeeeee;
+    border-right: 3px solid #00838f;
+}
+.channel-list li:hover {
+    background-color:#f5f5f5 ;
+}
+.channel-name {
+    font-size:16px;
+    text-overflow:ellipsis;
+    overflow:hidden;
+    flex:1 1 auto;
+    margin:0px 22px;
+}
+.channel-list i {
+    font-size: 20px;
+    color:#666666;
+}
+
+.timestamp {
+    font-size: 12px;
+    color: #666666;
+}
+#message-area .headbar {
+    display: flex;
+    justify-content:space-between;
+}
+#message-area h1 {
+    font-size: 18px;
+}
+/* favorite button */
+.headbar a {
+    line-height: 66px;
+}
+/* favorite button */
+#favorite-button {
+    cursor:pointer;
+    
+}
+
+/* incoming message time */
+.incoming-message .timestamp {
+    margin-left: 44px;
+}
+
+/*outgoing message time */
+.outgoing-message .timestamp {
+    margin-right: 44px;
+}
+
+#chat-area {
+    display: flex;
+    flex-direction: column;
+    padding:22px;
+    height: calc(100vh - 2 * 66px);
+    overflow-y:auto;
+    box-sizing: border-box;
+    width: 100%;
+
+}
+.message-content {
+    padding: 11px;
+    margin: 0px 11px;
+    text-align: left;
+}
+.incoming-message .message-content {
+    background-color:#eeeeee;
+    border-radius:20px 20px 20px 5px;
+}
+.outgoing-message .message-content {
+    color:white;
+    background-color:#00838f;
+    border-radius:20px 20px 5px 20px ;
+    
+}
+
+.message {
+    margin-bottom:22px;
+    max-width: 75%;
+}
+.message i {
+    font-size: 33px;
+    color: #666666;
+}
+.incoming-message {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.outgoing-message {
+    align-self: flex-end;
+    text-align: right;
+}
+.message-wrapper {
+    display: flex;
+    align-items: flex-end;
+}
+.message-content h3 {
+    color: #00838f;
+    font-size:14px;
+    margin-bottom: 11px;
+}
+.message-content p {
+    font-size: 14px;
+}
+#input-area {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    height: 66px;
+    bottom:0;
+    padding:0 22px;
+    background-color: #eeeeee;
+    box-sizing: border-box;
+}
+
+#message-input {
+    flex-basis: 100%;
+    border:none;
+    height: 44px;
+    font-size: 12px;
+    border-radius: 11px;
+    padding:0 11px;
+    margin:0 22px;
+}
+
+.button {
+    color:#00838f;
+    cursor: pointer;
+}
+
+#emoticon-button {
+    color: white;
+    background-color: #00838f;
+    padding: 11px;
+    border-radius: 50%;
+    cursor:pointer;
+}
+#message-input:hover,#message-input:focus {
+    outline: none;
+    border-color: #9ecaed;
+    box-shadow: 0 0 10px #9ecaed;
+}
