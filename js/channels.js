@@ -1,38 +1,37 @@
-const mockChannels= [
-    {
+const mockChannels = [{
     id: "000001",
     name: "MeetUp",
     favorite: true,
     messages: [],
-    latestMessage: "17:24"
+    latestMessage: "11/12/2018 20:24:0"
     },
     {
     id : "000002",
     name : "Octoberfest",
     favorite : true,
     messages: [],
-    latestMessage: "18:24"
+    latestMessage: "9/12/2018 18:24:0"
     },
     {
     id : "000003",
     name : "WeatherChannel",
     favorite : false,
     messages: [],
-    latestMessage: "19:24"
+    latestMessage: "12/12/2018 22:24:0"
     },
     {
     id : "000004",
     name : "SevenContinents",
     favorite : false,
     messages: [],
-    latestMessage: "20:24"
+    latestMessage: "No messages"
     },
     {
     id : "000005",
     name : "Dlc",
     favorite : false,
     messages: [],
-    latestMessage: "21:24"
+    latestMessage: "No messages"
     }
 ]
 
