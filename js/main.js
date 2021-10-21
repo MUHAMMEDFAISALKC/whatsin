@@ -1,28 +1,34 @@
-
-
 // start the external action 
 // console log s app is live
-function init() {
+console.log("App is alive");
+
+let channels = [];
+let messages = [];
+
+// create global variable for the currently selected channel.
+let selectedChannel;
+
+// get browser language for formating of timestamp
+const browserLanguage = navigator.language || navigator.userLanguage;
+
+window.initialize = function () {
     console.log("App is initialized");
     getChannels();
     getMessages();
     loadMessagesIntoChannel();
     displayChannels();
-    //loadEmojis();
+    loadEmojis();
     document.getElementById("send-button").addEventListener("click", sendMessage);
-    /*document
-        .getElementById("emoticon-button")
-        .addEventListener("click", toggleEmojiArea);
-    */
-    /*document
-        .getElementById("close-emoticon-button")
-        .addEventListener("click", toggleEmojiArea);
-    */
+
+    document.getElementById("emoticon-button").addEventListener("click", toggleEmojiArea);
+    
+    document.getElementById("close-emoticon-button").addEventListener("click", toggleEmojiArea);
+    //document.getElementById('emoji-list').addEventListener('click', copyEmojiToinput);
 }
 
-console.log("App is alive");
 
-let selectedChannel;
+
+
 
 function switchChannel(selectedChannelID) {
     const channels = mockChannels;
@@ -41,7 +47,8 @@ function switchChannel(selectedChannelID) {
 }
 
 function showHeader() {
-    document.getElementById('channelName').innerHTML = selectedChannel.name;
+    document.getElementsByTagName('h1')[1].innerHTML = selectedChannel.name;
+    //document.getElementById('channelName').
     document.getElementById('favorite-button').innerHTML = (selectedChannel.favorite) ? "favorite" : "favorite_border";
 }
 
@@ -181,4 +188,34 @@ function loadMessagesIntoChannel() {
         });
     }); 
 }
+let i = 0;
+function loadEmojis() {
+    emojis.forEach((emoji) => {
+        i++;
+        $(`<td id="emojiButton`+i+`" onclick="copyEmojiToinput(this.id)">`).html(emoji).appendTo('#emoji-list');
+    });
+} 
 
+function toggleEmojiArea () {
+    //$('#emoji-area').toggle();
+    var emojiField = document.getElementById('emoji-area');
+    var inputArea = document.getElementById('input-area');
+    var chatArea = document.getElementById('chat-area')
+    if (emojiField.style.display === 'none' ) {
+        emojiField.style.display = 'flex';
+        inputArea.style.bottom = '153px';
+        inputArea.style.borderBottom = '1px solid #aaaaaa';
+        chatArea.style.height = 'calc(100vh - 284px)';
+    } else {
+        emojiField.style.display = 'none';
+        inputArea.style.bottom = '0px';
+        chatArea.style.height = 'calc(100vh - 132px)';
+    }
+}
+function copyEmojiToinput(selectedEmojiID) {
+    let emojiText = document.getElementById(selectedEmojiID).innerHTML;
+    let writtenText = document.getElementById('message-input').value;
+    $('#message-input').val(writtenText + emojiText);
+    //$(selectedEmojiID).clone().append('#message-input');
+    //console.log(writtenText);
+}
