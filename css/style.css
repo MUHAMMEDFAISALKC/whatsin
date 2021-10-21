@@ -35,7 +35,7 @@ section {
     line-height: 66px;
 }
 
-.fab {
+#fab {
     position: absolute;
     top:44px;
     right:22px;
@@ -142,7 +142,6 @@ section {
     overflow-y:auto;
     box-sizing: border-box;
     width: 100%;
-
 }
 .message-content {
     padding: 11px;
@@ -231,4 +230,76 @@ section {
     outline: none;
     border-color: #9ecaed;
     box-shadow: 0 0 10px #9ecaed;
+}
+#select-channel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-self: center;
+    height: 100%;
+    font-size: 15px;
+    color:#666666;
+}
+
+#emoji-area {
+    position: fixed;
+    display: none;
+    align-content:center;
+    flex-flow: column;
+    bottom: 2px;
+    height: 150px;
+    width: calc(100%- 400px);
+    text-align: left;
+    background-color: white;
+    box-sizing: border-box;
+    z-index: 1;
+}
+#emoji-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow-y:auto;
+    align-items: center;
+    align-self: center;
+    flex-wrap:wrap;
+}
+#emoji-list td {
+    border: 1px solid #aaaaaa;
+    box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.24);
+    min-width: 26px;
+    max-width: fit-content;
+    height: 26px;
+    line-height: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s all;
+    padding: 2px;
+    margin: 1px;
+    box-sizing: border-box;
+}
+#emoji-list td:active {
+    transform: scale(0.85);
+    box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.24);
+}
+#emoji-header {
+    vertical-align: middle;
+    background-color: #eeeeee;
+    display: flex;
+    align-content: space-between;
+    border-bottom: 1px solid #aaaaaa;
+}
+#emoji-area span {
+    padding-left: 10px;
+    align-items: flex-start;
+    flex:1 1 auto;
+    color:#00838f;
+    font-weight: bold;
+    
+}
+#emoji-area #close-emoticon-button {
+    padding-right: 10px;
+}
+#emoji-area a {
+    display: flex;
+    align-self:flex-end;
 }
