@@ -19,19 +19,64 @@ window.initialize = function () {
     displayChannels();
     loadEmojis();
     document.getElementById("send-button").addEventListener("click", sendMessage);
-
     document.getElementById("emoticon-button").addEventListener("click", toggleEmojiArea);
-    
     document.getElementById("close-emoticon-button").addEventListener("click", toggleEmojiArea);
-    //document.getElementById('emoji-list').addEventListener('click', copyEmojiToinput);
+};
+
+// ----------------------- Channels -----------------------
+// get existing channels from mock file or database
+function getChannels() {
+    channels = mockChannels;
+}
+// get existing messages from mock file or database
+function getMessages() {
+    messages = mockMessages;
+}
+//load existing messages into respective channel
+function loadMessagesIntoChannel() {
+    channels.forEach((channel) => {
+        messages.forEach((message) => {
+            if ( message.channel === channel.id ) {
+                channel.messages.push(message);
+            } else {
+                return false;
+            }
+        });
+    }); 
 }
 
+//display channels in channel area
+function displayChannels() {
+    const favoriteList = document.getElementById('favorite-channels');
+    const regularList = document.getElementById('regular-channels');
+    favoriteList.innerHTML = "";
+    regularList.innerHTML = "";
 
-
-
+    channels.forEach((channel) => {
+        const currentChannelHtmlString =
+            `<li id="` + channel.id + `" onclick="switchChannel(this.id);">
+                <i class="material-icons">group</i>
+                <span class="channel-name">` + channel.name + `</span>
+                <span class="timestamp">` + channel.latestMessage + `</span> 
+            </li>`;
+        if (channel.favorite) {
+            favoriteList.innerHTML += currentChannelHtmlString;
+        } else {
+            regularList.innerHTML += currentChannelHtmlString;
+        }
+    });
+    // always add selected class to current channel
+    if (!!selectedChannel) {
+        document.getElementById(selectedChannel.id).classList.add("selected");
+    }
+}
+/*
+* Switches channel
+* @param {string} selectedChannelID - ID of channel to switch to.
+*/
 
 function switchChannel(selectedChannelID) {
-    const channels = mockChannels;
+
     if (!!selectedChannel) {
         document.getElementById(selectedChannel.id).classList.remove("selected");
     }
@@ -58,7 +103,6 @@ function showHeader() {
 
 function showMessages() {
     reset();
-    const messages = mockMessages;
     messages.forEach((message) => {
         if (selectedChannel.id === message.channel) {
             let currentMessageHtmlString;
@@ -138,56 +182,6 @@ function sendMessage() {
     } 
 }
 
-function getChannels() {
-    const channels = mockChannels;
-}
-
-function getMessages() {
-    const messages = mockMessages;
-}
-function displayChannels() {
-    const favoriteList = document.getElementById('favorite-channels');
-    const regularList = document.getElementById('regular-channels');
-    favoriteList.innerHTML = "";
-    regularList.innerHTML = "";
-
-    const channels = mockChannels;
-    channels.forEach((channel) => {
-            const currentChannelHtmlString =
-                `    <li id="` +
-                channel.id + 
-                `" onclick="switchChannel(this.id);">
-                <i class="material-icons">group</i>
-                <span class="channel-name">` +
-                channel.name +
-                `</span>
-                <span class="timestamp">` +
-                
-                channel.latestMessage + 
-                `</span> 
-                </li>`;
-            if (channel.favorite) {
-                favoriteList.innerHTML += currentChannelHtmlString;
-            } else {
-                regularList.innerHTML += currentChannelHtmlString;
-            }
-    });
-}
-
-function loadMessagesIntoChannel() {
-    const channels = mockChannels;
-    channels.forEach((channel) => {
-        const messages = mockMessages;
-        messages.forEach((message) => {
-            if (channel.id === message.channel) {
-                channel.messages.push(message);
-            } else {
-                return false;
-            }
-
-        });
-    }); 
-}
 let i = 0;
 function loadEmojis() {
     emojis.forEach((emoji) => {
@@ -216,6 +210,4 @@ function copyEmojiToinput(selectedEmojiID) {
     let emojiText = document.getElementById(selectedEmojiID).innerHTML;
     let writtenText = document.getElementById('message-input').value;
     $('#message-input').val(writtenText + emojiText);
-    //$(selectedEmojiID).clone().append('#message-input');
-    //console.log(writtenText);
 }
