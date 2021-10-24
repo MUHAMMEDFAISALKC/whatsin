@@ -57,7 +57,7 @@ function displayChannels() {
             `<li id="` + channel.id + `" onclick="switchChannel(this.id);">
                 <i class="material-icons">group</i>
                 <span class="channel-name">` + channel.name + `</span>
-                <span class="timestamp">` + channel.latestMessage + `</span> 
+                <span class="timestamp">` + channel.latestMessage() + `</span> 
             </li>`;
         if (channel.favorite) {
             favoriteList.innerHTML += currentChannelHtmlString;
@@ -76,7 +76,7 @@ function displayChannels() {
 */
 
 function switchChannel(selectedChannelID) {
-
+    console.log("selected channel with id: " + selectedChannelID)
     if (!!selectedChannel) {
         document.getElementById(selectedChannel.id).classList.remove("selected");
     }
@@ -87,99 +87,180 @@ function switchChannel(selectedChannelID) {
             selectedChannel = channel;
         }
     });
+    document.getElementById("message-input").disabled = false;
+    document.getElementById("message-input").placeholder = 'type your message here';
     showHeader();
     showMessages();
 }
 
+// changes header name and favorite button
 function showHeader() {
     document.getElementsByTagName('h1')[1].innerHTML = selectedChannel.name;
-    //document.getElementById('channelName').
     document.getElementById('favorite-button').innerHTML = (selectedChannel.favorite) ? "favorite" : "favorite_border";
 }
+
+/*
+* channel Constructor Fuction 
+* @param {string} name- name of channel
+*/
+function Channel (name) {
+    this.id = ((Math.max(...channels.map(channel => channel.id))+1).toString()).padStart(6,0);
+    this.name = name;
+    this.favorite = false;
+    this.messages = [];
+}
+
+//simple sort fuction: insert current channel at [0] in channels array and call it if new message is sent
+function sortChannels() {
+    //remove first
+    channels = channels.filter(channel => channel.id !== selectedChannel.id);
+    // insert
+    channels.unshift(selectedChannel);
+}
+// Object method that return the date of latest message (to display in channel)
+Channel.prototype.latestMessage = function () {
+    // if message exist, dispaly timestamp
+    if (!!this.messages.length) {
+        const latest = new Date(Math.max(...this.messages.map(message => message.createdOn)));
+        // if messages is from yesterday or older, display date , else display time
+        if (new Date().getDate() - latest.getDate() > 1) {
+            return latest.toLocaleDateString(browserLanguage, {year:"numeric", month:"numeric", day:"numeric"});
+        } else {
+            return latest.toLocaleTimeString(browserLanguage, {hour:"numeric", minute:"numeric",});
+        }
+    }
+}
+
+
+// ----------------------- Messages -------------------
+/* Message Constructor Function
+* @param {string} user - Name of sender
+* @param {boolean} own - Own {outgoing} message or incoming
+* @param {string} text - Message text
+* @param {string} channel - ID of channel in which message is sent
+*/
+
+function Message (user, channel, own, text ) {
+    this.createdBy = user;
+    this.createdOn = new Date(Date.now());
+    this.channel = channel;
+    this.own = own;
+    this.text = text;
+}
+
+// Object method that returns the if message is from yesterday or older
+Message.prototype.yesterdayOrOlder = function () {
+    return new Date().getDate() - this.createdOn.getDate() >1;
+}
+
+// Event Listener : New message will be sent if user clicks send button or press enter.
+// send button is grayed out if there is no input provided
+
+document.getElementById('message-input').onkeyup = function(e){
+    if (!!document.getElementById('message-input').value) {
+        document.getElementById('send-button').style.color = '#00838f';
+    } else {
+        document.getElementById('send-button').style.color = '#00838f54';
+    }
+    if (e.keyCode == 13) {
+        sendMessage();
+    }
+};
 
 //function showMessages() {
 //    document.getElementById('chat-area').innerHTML = selectedChannel.messages;
 //}
 
+
 function showMessages() {
-    reset();
-    messages.forEach((message) => {
-        if (selectedChannel.id === message.channel) {
+    const chatArea = document.getElementById('chat-area');
+    chatArea.innerHTML = '';
+    selectedChannel.messages.forEach((message) => {
+        if (!!selectedChannel.messages.length) {
+            // if messages are older than 24 hours, display full date
+            let messageTime;
+            if (!message.yesterdayOrOlder) {
+                messageTime = message.createdOn.toLocaleTimeString(browserLanguage, {year:'numeric', month:'numeric', day:'numeric', hour:'numeric', minute:'numeric'});
+            } else {
+                messageTime = message.createdOn.toLocaleTimeString(browserLanguage, {hour:'numeric', minute:'numeric'});
+            }
             let currentMessageHtmlString;
             if (message.own) {
                 currentMessageHtmlString =
-                    `<div class="message-wrapper">
-                        <div class="message-content">
-                            <p>` + message.text + `</p>
+                    `<div class="message outgoing-message">
+                        <div class="message-wrapper">
+                            <div class="message-content">
+                                <p>` + message.text + `</p>
+                            </div>
+                            <i class="material-icons">account_circle</i>
                         </div>
-                        <i class="material-icons">account_circle</i>
-                    </div>
-                    <span class="timestamp">` + message.createdOn() + `</span>`
-                //console.log(currentMessageHtmlString);
-                $('<div class="message outgoing-message">').html(currentMessageHtmlString).appendTo('#chat-area');
+                        <span class="timestamp">` + messageTime+ `</span>
+                    </div>`
             } else {
                 currentMessageHtmlString =
-                    `<div class="message-wrapper">
-                        <i class="material-icons">account_circle</i>
-                        <div class="message-content">
-                            <h3>` + message.createdBy + `</h3>
-                            <p>` + message.text + `</p>
+                    `<div class="message incoming-message">
+                        <div class="message-wrapper">
+                            <i class="material-icons">account_circle</i>
+                            <div class="message-content">
+                                <h3>` + message.createdBy + `</h3>
+                                <p>` + message.text + `</p>
+                            </div>
                         </div>
-                    </div>
-                    <span class="timestamp">` + message.createdOn() + `</span>`
-                //console.log(currentMessageHtmlString);
-                $('<div class="message incoming-message">').html(currentMessageHtmlString).appendTo('#chat-area');
+                        <span class="timestamp">` + messageTime + `</span>
+                    </div>`
             }
-        } else {
-            console.log("No more messages")
+            chatArea.innerHTML += currentMessageHtmlString;
         }
     });
+    chatArea.scrollTop = chatArea.scrollHeight;
+    //update timestamp in channel area
+    document.getElementById(selectedChannel.id).querySelector('.timestamp').innerHTML = selectedChannel.latestMessage();
 }
-function reset() {
-    $('#chat-area').empty();
+// now it is not used
+function reset(area) {
+    $(area).empty();
 }
-
-function Dates(dd, MM, yyyy, hh, mm,ss) {
-    this.dd = dd;
-    this.MM = MM,
-    this.yyyy = yyyy;
-    this.hh = hh;
-    this.mm = mm;
-    this.ss = ss;
-    this.fulldates = function () {
-        return this.dd+ '/' + this.MM + '/' + this.yyyy + ' ' + this.hh + ':' + this.mm + ':' + this.ss;
-    } 
-}
-
-
 
 function sendMessage() {
-    const messagetext = document.getElementById("message-input").value;
-    let d = new Date();
-    let date = new Dates(d.getDate(), d.getMonth() + 1, d.getFullYear(), d.getHours(), d.getMinutes(), d.getSeconds());
-    let time = function () {
-        return date.fulldates();
-    }
-
+    const text = document.getElementById("message-input").value;
     if (!!selectedChannel) {
-        if (!!messagetext) {
-            const message = {createdBy: "Faisal", createdOn: time, channel: selectedChannel.id, own: true, text: messagetext};
-            console.log("New message: ");
-            mockMessages.push(message);
+        if (!!text) {
+            const createdBy = "Faisal";
+            const channel = selectedChannel.id;
+            const own = true;
+            const message = new Message(createdBy, channel, own, text);
+            console.log("New message send");
+            selectedChannel.messages.push(message);
             //console.log("The following message was send: " +messageText); 
             //$("<div class='message outgoing-message'>").html(messageString).appendTo("#chat-area"); 
             document.getElementById("message-input").value = "";
+            document.getElementById('send-button').style.color = "#00838f54";
             showMessages();
+            sortChannels();
             displayChannels();
+            receiveEchoMessage();
         } else {
             document.getElementById("message-input").value = "";
             return;
         }
     } else {
-        document.getElementById("message-input").value = "";
+        document.getElementById("message-input").value = '';
         console.log("please select channel");
         return;
     } 
+}
+// get an echo message 
+function receiveEchoMessage() {
+    if (!!selectedChannel) {
+        const createdBy = 'Lorenz';
+        const channel = selectedChannel.id;
+        const own = false;
+        const text = 'You wrote: ' + selectedChannel.messages.slice(-1)[0].text;
+        const message = new Message(createdBy, channel, own, text);
+        selectedChannel.messages.push(message);
+        // set timout for a more natural response time
+        setTimeout(showMessages, 3000);
+    }
 }
 
 let i = 0;
@@ -190,24 +271,51 @@ function loadEmojis() {
     });
 } 
 
+// pop up emoji area and pop out
 function toggleEmojiArea () {
     //$('#emoji-area').toggle();
-    var emojiField = document.getElementById('emoji-area');
+    var emojiArea = document.getElementById('emoji-area');
     var inputArea = document.getElementById('input-area');
     var chatArea = document.getElementById('chat-area')
-    if (emojiField.style.display === 'none' ) {
-        emojiField.style.display = 'flex';
+    if (emojiArea.style.display === 'none' ) {
+        emojiArea.style.display = 'flex';
         inputArea.style.bottom = '153px';
         inputArea.style.borderBottom = '1px solid #aaaaaa';
         chatArea.style.height = 'calc(100vh - 284px)';
+        chatArea.scrollTop = chatArea.scrollHeight;
     } else {
-        emojiField.style.display = 'none';
+        emojiArea.style.display = 'none';
         inputArea.style.bottom = '0px';
         chatArea.style.height = 'calc(100vh - 132px)';
     }
 }
+
+// copy clicked emojis to input field 
 function copyEmojiToinput(selectedEmojiID) {
     let emojiText = document.getElementById(selectedEmojiID).innerHTML;
     let writtenText = document.getElementById('message-input').value;
     $('#message-input').val(writtenText + emojiText);
 }
+
+// focus input field when click on emoji
+document.getElementById('emoji-list').onmouseup = function(){
+    document.getElementById('send-button').style.color = '#00838f';
+    document.getElementById('message-input').focus();
+};
+
+
+/* PENDING THINGS:
+* hide select channel comment in switchChannel()
+DONE * pending latestMessage in prototype of channel Constructor
+* fab button reactions
+    * popup model to add new channel
+    * popup hide when cancel
+    * new channel created when press enter
+    * new channel creation with input values
+* toggle favorite button
+* make the selected chennel in to favorite group
+* channel sorting
+    *simple sort with latest channel with making array order [0]
+
+
+*/
