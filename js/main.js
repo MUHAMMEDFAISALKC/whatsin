@@ -21,8 +21,9 @@ window.initialize = function () {
     document.getElementById("send-button").addEventListener("click", sendMessage);
     document.getElementById("emoticon-button").addEventListener("click", toggleEmojiArea);
     document.getElementById("close-emoticon-button").addEventListener("click", toggleEmojiArea);
-    document.getElementById("fab").addEventListener("click", toggleCreateNewChannel)
-    document.getElementById("closeAddNewChannel").addEventListener("click", toggleCreateNewChannel)
+    document.getElementById("fab").addEventListener("click", toggleCreateNewChannel);
+    document.getElementById("closeAddNewChannel").addEventListener("click", toggleCreateNewChannel);
+    document.getElementById("doneAddNewChannel").addEventListener("click", createNewChannel);
 
 };
 
@@ -127,10 +128,12 @@ Channel.prototype.latestMessage = function () {
         const latest = new Date(Math.max(...this.messages.map(message => message.createdOn)));
         // if messages is from yesterday or older, display date , else display time
         if (new Date().getDate() - latest.getDate() > 1) {
-            return latest.toLocaleDateString(browserLanguage, {year:"numeric", month:"numeric", day:"numeric"});
+            return latest.toLocaleDateString(navigator.language, {year:"numeric", month:"numeric", day:"numeric"});
         } else {
-            return latest.toLocaleTimeString(browserLanguage, {hour:"numeric", minute:"numeric",});
+            return latest.toLocaleTimeString(navigator.language, {hour:"numeric", minute:"numeric"});
         }
+    } else {
+        return 'No Messages';
     }
 }
 
@@ -308,13 +311,86 @@ document.getElementById('emoji-list').onmouseup = function(){
 
 
 function toggleCreateNewChannel() {
-    var addChannelArea = document.getElementById('addChannelArea')
+    var addChannelArea = document.getElementById('addChannelArea');
+    var newChannel= document.getElementById("newChannel");
 
     if (addChannelArea.style.display === 'none') {
         addChannelArea.style.display = 'flex'
+        newChannel.focus();
     } else if (addChannelArea.style.display == 'flex') {
         addChannelArea.style.display = 'none'
     }
+}
+
+
+
+
+function createNewChannel() {
+    var newChannel = document.getElementById("newChannel").value;
+    if (!!newChannel) {
+        //const id = ((Math.max(...channels.map(channel => channel.id))+1).toString()).padStart(6,0);
+        const name = newChannel;
+        //const favorite = false;
+        //const messages = [];
+
+        const channel = new Channel(name);
+        channel.latestMessage = function () {
+            // if message exist, dispaly timestamp
+            if (!!this.messages.length) {
+                const latest = new Date(Math.max(...this.messages.map(message => message.createdOn)));
+                // if messages is from yesterday or older, display date , else display time
+                if (new Date().getDate() - latest.getDate() > 1) {
+                    return latest.toLocaleDateString(navigator.language, {year:"numeric", month:"numeric", day:"numeric"});
+                } else {
+                    return latest.toLocaleTimeString(navigator.language, {hour:"numeric", minute:"numeric"});
+                }
+            } else {
+                return 'No Messages';
+            }
+        }
+
+        // welcome to new channel message from whatsin 
+        const createdBy = "whatsin";
+        const channelId = name;
+        const own = false;
+        const text = 'welcome to new channel';
+        const message = new Message(createdBy, channelId, own, text);
+        channel.messages.push(message);
+        channels.push(channel);
+        document.getElementById("newChannel").value = "";
+        toggleCreateNewChannel()
+        sortNewChannels(channel);
+        displayChannels();
+        switchChannel(channel.id);
+        //sortChannels();
+    } else {
+        alert('please give channel name');
+    }
+}
+
+document.getElementById('newChannel').onkeydown = function(e) {
+    if(e.keyCode === 13) {
+        createNewChannel();
+    }
+};
+
+
+function sortNewChannels(newChannel) {
+    //remove first
+    channels = channels.filter(channel => channel.id !== newChannel.id);
+    // insert
+    channels.unshift(newChannel);
+}
+
+function toggleFavorite() {
+    if (selectedChannel.favorite === true) {
+        selectedChannel.favorite = false;
+    } else {
+        selectedChannel.favorite = true;
+    }
+    displayChannels();
+    switchChannel(selectedChannel.id);
+    console.log(selectedChannel.favorite);
 }
 
 /* PENDING THINGS:
