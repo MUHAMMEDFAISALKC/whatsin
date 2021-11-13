@@ -108,7 +108,8 @@ function showHeader() {
 * @param {string} name- name of channel
 */
 function Channel (name) {
-    this.id = ((Math.max(...channels.map(channel => channel.id))+1).toString()).padStart(6,0);
+    //this.id = ((Math.max(...channels.map(channel => channel.id))+1).toString()).padStart(6,0);
+    this.id = Math.random().toString(36).substr(2, 10);
     this.name = name;
     this.favorite = false;
     this.messages = [];
