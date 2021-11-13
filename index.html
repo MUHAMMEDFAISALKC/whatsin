@@ -31,7 +31,7 @@
         <section id="message-area">
             <div class="headbar" id="message-area-header">
                 <h1></h1>
-                <a class="material-icons button" id="favorite-button"></a>
+                <a class="material-icons button" id="favorite-button" onclick="toggleFavorite();"></a>
             </div>
             <div id="chat-area">
                 <p id="select-channel">Select a channel to start massaging.</p>
@@ -55,7 +55,7 @@
             <div class="add-channel">
                 <label for="channelName">Channel Name</label>
                 <br>
-                <input type="text" id="newChannel" placeholder="channel name" autocomplete="off" autofocus>
+                <input type="text" id="newChannel" placeholder=" channel name" autocomplete="off">
                 <div id="add-cancel-channel">
                     <button id="closeAddNewChannel" class="button-reverse button"><a class="material-icons button button-in-colour">cancel</a>cancel</button><button id="doneAddNewChannel" class="button-reverse button"><a class="material-icons button button-in-colour">done</a>create</button>
                 </div>
