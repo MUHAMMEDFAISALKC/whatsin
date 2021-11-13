@@ -114,13 +114,6 @@ function Channel (name) {
     this.messages = [];
 }
 
-//simple sort fuction: insert current channel at [0] in channels array and call it if new message is sent
-function sortChannels() {
-    //remove first
-    channels = channels.filter(channel => channel.id !== selectedChannel.id);
-    // insert
-    channels.unshift(selectedChannel);
-}
 // Object method that return the date of latest message (to display in channel)
 Channel.prototype.latestMessage = function () {
     // if message exist, dispaly timestamp
@@ -128,14 +121,80 @@ Channel.prototype.latestMessage = function () {
         const latest = new Date(Math.max(...this.messages.map(message => message.createdOn)));
         // if messages is from yesterday or older, display date , else display time
         if (new Date().getDate() - latest.getDate() > 1) {
-            return latest.toLocaleDateString(navigator.language, {year:"numeric", month:"numeric", day:"numeric"});
+            return latest.toLocaleDateString(browserLanguage, {year:"numeric", month:"numeric", day:"numeric"});
         } else {
-            return latest.toLocaleTimeString(navigator.language, {hour:"numeric", minute:"numeric"});
+            return latest.toLocaleTimeString(browserLanguage, {hour:"numeric", minute:"numeric"});
         }
     } else {
         return 'No Messages';
     }
 }
+
+function toggleCreateNewChannel() {
+    var addChannelArea = document.getElementById('addChannelArea');
+    var newChannel= document.getElementById("newChannel");
+
+    if (addChannelArea.style.display === 'none') {
+        addChannelArea.style.display = 'flex'
+        newChannel.focus();
+    } else if (addChannelArea.style.display == 'flex') {
+        addChannelArea.style.display = 'none'
+    }
+}
+
+
+
+
+function createNewChannel() {
+    var newChannel = document.getElementById("newChannel").value;
+    if (!!newChannel) {
+        const name = newChannel;
+        const channel = new Channel(name);
+        channels.push(channel);
+        document.getElementById("newChannel").value = "";
+        toggleCreateNewChannel()
+        sortNewChannels(channel);
+        selectedChannel = channel;
+        displayChannels();
+        switchChannel(channel.id);
+    } else {
+        alert('please give channel name');
+    }
+}
+
+document.getElementById('newChannel').onkeydown = function(e) {
+    if(e.keyCode === 13) {
+        createNewChannel();
+    }
+};
+
+
+function sortNewChannels(newChannel) {
+    //remove first
+    channels = channels.filter(channel => channel.id !== newChannel.id);
+    // insert
+    channels.unshift(newChannel);
+}
+
+function toggleFavorite() {
+    if (selectedChannel.favorite === true) {
+        selectedChannel.favorite = false;
+    } else {
+        selectedChannel.favorite = true;
+    }
+    displayChannels();
+    switchChannel(selectedChannel.id);
+    console.log(selectedChannel.favorite);
+}
+
+//simple sort fuction: insert current channel at [0] in channels array and call it if new message is sent
+function sortChannels() {
+    //remove first
+    channels = channels.filter(channel => channel.id !== selectedChannel.id);
+    // insert
+    channels.unshift(selectedChannel);
+}
+
 
 
 // ----------------------- Messages -------------------
@@ -177,6 +236,34 @@ document.getElementById('message-input').onkeyup = function(e){
 //    document.getElementById('chat-area').innerHTML = selectedChannel.messages;
 //}
 
+function sendMessage() {
+    const text = document.getElementById("message-input").value;
+    if (!!selectedChannel) {
+        if (!!text) {
+            const createdBy = "Faisal";
+            const channel = selectedChannel.id;
+            const own = true;
+            const message = new Message(createdBy, channel, own, text);
+            console.log("New message send");
+            selectedChannel.messages.push(message);
+            //console.log("The following message was send: " +messageText); 
+            //$("<div class='message outgoing-message'>").html(messageString).appendTo("#chat-area"); 
+            document.getElementById("message-input").value = "";
+            document.getElementById('send-button').style.color = "#00838f54";
+            showMessages();
+            sortChannels();
+            displayChannels();
+            receiveEchoMessage();
+        } else {
+            document.getElementById("message-input").value = "";
+            return;
+        }
+    } else {
+        document.getElementById("message-input").value = '';
+        console.log("please select channel");
+        return;
+    } 
+}
 
 function showMessages() {
     const chatArea = document.getElementById('chat-area');
@@ -185,7 +272,7 @@ function showMessages() {
         if (!!selectedChannel.messages.length) {
             // if messages are older than 24 hours, display full date
             let messageTime;
-            if (!message.yesterdayOrOlder) {
+            if (message.yesterdayOrOlder()) {
                 messageTime = message.createdOn.toLocaleTimeString(browserLanguage, {year:'numeric', month:'numeric', day:'numeric', hour:'numeric', minute:'numeric'});
             } else {
                 messageTime = message.createdOn.toLocaleTimeString(browserLanguage, {hour:'numeric', minute:'numeric'});
@@ -227,34 +314,6 @@ function reset(area) {
     $(area).empty();
 }
 
-function sendMessage() {
-    const text = document.getElementById("message-input").value;
-    if (!!selectedChannel) {
-        if (!!text) {
-            const createdBy = "Faisal";
-            const channel = selectedChannel.id;
-            const own = true;
-            const message = new Message(createdBy, channel, own, text);
-            console.log("New message send");
-            selectedChannel.messages.push(message);
-            //console.log("The following message was send: " +messageText); 
-            //$("<div class='message outgoing-message'>").html(messageString).appendTo("#chat-area"); 
-            document.getElementById("message-input").value = "";
-            document.getElementById('send-button').style.color = "#00838f54";
-            showMessages();
-            sortChannels();
-            displayChannels();
-            receiveEchoMessage();
-        } else {
-            document.getElementById("message-input").value = "";
-            return;
-        }
-    } else {
-        document.getElementById("message-input").value = '';
-        console.log("please select channel");
-        return;
-    } 
-}
 // get an echo message 
 function receiveEchoMessage() {
     if (!!selectedChannel) {
@@ -265,10 +324,11 @@ function receiveEchoMessage() {
         const message = new Message(createdBy, channel, own, text);
         selectedChannel.messages.push(message);
         // set timout for a more natural response time
-        setTimeout(showMessages, 3000);
+        setTimeout(showMessages, 1500);
     }
 }
 
+// ----------------------------- Emojis --------------------------
 let i = 0;
 function loadEmojis() {
     emojis.forEach((emoji) => {
@@ -308,103 +368,3 @@ document.getElementById('emoji-list').onmouseup = function(){
     document.getElementById('send-button').style.color = '#00838f';
     document.getElementById('message-input').focus();
 };
-
-
-function toggleCreateNewChannel() {
-    var addChannelArea = document.getElementById('addChannelArea');
-    var newChannel= document.getElementById("newChannel");
-
-    if (addChannelArea.style.display === 'none') {
-        addChannelArea.style.display = 'flex'
-        newChannel.focus();
-    } else if (addChannelArea.style.display == 'flex') {
-        addChannelArea.style.display = 'none'
-    }
-}
-
-
-
-
-function createNewChannel() {
-    var newChannel = document.getElementById("newChannel").value;
-    if (!!newChannel) {
-        //const id = ((Math.max(...channels.map(channel => channel.id))+1).toString()).padStart(6,0);
-        const name = newChannel;
-        //const favorite = false;
-        //const messages = [];
-
-        const channel = new Channel(name);
-        channel.latestMessage = function () {
-            // if message exist, dispaly timestamp
-            if (!!this.messages.length) {
-                const latest = new Date(Math.max(...this.messages.map(message => message.createdOn)));
-                // if messages is from yesterday or older, display date , else display time
-                if (new Date().getDate() - latest.getDate() > 1) {
-                    return latest.toLocaleDateString(navigator.language, {year:"numeric", month:"numeric", day:"numeric"});
-                } else {
-                    return latest.toLocaleTimeString(navigator.language, {hour:"numeric", minute:"numeric"});
-                }
-            } else {
-                return 'No Messages';
-            }
-        }
-
-        // welcome to new channel message from whatsin 
-        const createdBy = "whatsin";
-        const channelId = name;
-        const own = false;
-        const text = 'welcome to new channel';
-        const message = new Message(createdBy, channelId, own, text);
-        channel.messages.push(message);
-        channels.push(channel);
-        document.getElementById("newChannel").value = "";
-        toggleCreateNewChannel()
-        sortNewChannels(channel);
-        selectedChannel = channel;
-        displayChannels();
-        switchChannel(channel.id);
-    } else {
-        alert('please give channel name');
-    }
-}
-
-document.getElementById('newChannel').onkeydown = function(e) {
-    if(e.keyCode === 13) {
-        createNewChannel();
-    }
-};
-
-
-function sortNewChannels(newChannel) {
-    //remove first
-    channels = channels.filter(channel => channel.id !== newChannel.id);
-    // insert
-    channels.unshift(newChannel);
-}
-
-function toggleFavorite() {
-    if (selectedChannel.favorite === true) {
-        selectedChannel.favorite = false;
-    } else {
-        selectedChannel.favorite = true;
-    }
-    displayChannels();
-    switchChannel(selectedChannel.id);
-    console.log(selectedChannel.favorite);
-}
-
-/* PENDING THINGS:
-* hide select channel comment in switchChannel()
-DONE * pending latestMessage in prototype of channel Constructor
-* fab button reactions
-    * popup model to add new channel
-    * popup hide when cancel
-    * new channel created when press enter
-    * new channel creation with input values
-* toggle favorite button
-* make the selected chennel in to favorite group
-* channel sorting
-    *simple sort with latest channel with making array order [0]
-
-
-*/
