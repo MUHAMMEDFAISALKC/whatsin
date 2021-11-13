@@ -1,6 +1,6 @@
 const mockMessages = [ {
     createdBy: "Jack Blue",
-    createdOn: new Date('10-01-2021 01:1:53'),
+    createdOn: new Date('October 01, 2021 01:01:53'),
     channel: '000001',
     own: false,
     text: "how are you guys!",
@@ -11,7 +11,7 @@ const mockMessages = [ {
 
     {
     createdBy: "Jafer",
-    createdOn: new Date('10-02-2021 02:2:53'),
+    createdOn: new Date('October 02, 2021 02:02:53'),
     channel: '000002',
     own: false,
     text: "what about you!",
@@ -22,7 +22,7 @@ const mockMessages = [ {
 
     {
     createdBy: "Sajid",
-    createdOn: new Date('10-03-2021 03:3:53'),
+    createdOn: new Date('October 03, 2021 03:03:53'),
     channel: '000001',
     own: false,
     text: "well guys!",
@@ -33,7 +33,7 @@ const mockMessages = [ {
 
     {
     createdBy: "Faisal",
-    createdOn: new Date('10-04-2021 04:4:53'),
+    createdOn: new Date('October 04, 2021 04:04:53'),
     channel: '000001',
     own: true,
     text: "fine guys!",
@@ -44,7 +44,7 @@ const mockMessages = [ {
 
     {
     createdBy: "Javid",
-    createdOn: new Date('10-05-2021 05:5:53'),
+    createdOn: new Date('October 05, 2021 05:05:53'),
     channel: '000003',
     own: false,
     text: "i think everyone feeling good!",
