@@ -354,7 +354,7 @@ section {
 #newChannel {
     background-color: white;
     margin:15px;
-    font-size: 20px;
+    font-size: 18px;
     align-self: center;
     width: 160px;
     height: 40px;
@@ -363,8 +363,6 @@ section {
     border-radius: 10px;
     outline: none;
     border:none;
-    /*border: 2px solid #00838f;
-    */
 }
 
 .add-channel *button {
