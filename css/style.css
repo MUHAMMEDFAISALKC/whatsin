@@ -370,13 +370,16 @@ section {
     background-color: yellowgreen;
 }
 
-.display-opac {
-    background-color: rgba(0, 0, 0, 0.35);
+.modal {
+    background-color: rgba(0, 0, 0, 0.3);
+    display: none;
     position: fixed;
     left:0;
     right:0;
     bottom:0;
     top:0;
+    width: 100vw;
+    height: 100vh;
     align-items: center;
     justify-content: center;
     flex-direction: column;
