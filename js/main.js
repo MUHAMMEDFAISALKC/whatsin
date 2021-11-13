@@ -21,6 +21,9 @@ window.initialize = function () {
     document.getElementById("send-button").addEventListener("click", sendMessage);
     document.getElementById("emoticon-button").addEventListener("click", toggleEmojiArea);
     document.getElementById("close-emoticon-button").addEventListener("click", toggleEmojiArea);
+    document.getElementById("fab").addEventListener("click", toggleCreateNewChannel)
+    document.getElementById("closeAddNewChannel").addEventListener("click", toggleCreateNewChannel)
+
 };
 
 // ----------------------- Channels -----------------------
@@ -303,6 +306,16 @@ document.getElementById('emoji-list').onmouseup = function(){
     document.getElementById('message-input').focus();
 };
 
+
+function toggleCreateNewChannel() {
+    var addChannelArea = document.getElementById('addChannelArea')
+
+    if (addChannelArea.style.display === 'none') {
+        addChannelArea.style.display = 'flex'
+    } else if (addChannelArea.style.display == 'flex') {
+        addChannelArea.style.display = 'none'
+    }
+}
 
 /* PENDING THINGS:
 * hide select channel comment in switchChannel()
