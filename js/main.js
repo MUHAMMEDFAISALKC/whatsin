@@ -360,9 +360,9 @@ function createNewChannel() {
         document.getElementById("newChannel").value = "";
         toggleCreateNewChannel()
         sortNewChannels(channel);
+        selectedChannel = channel;
         displayChannels();
         switchChannel(channel.id);
-        //sortChannels();
     } else {
         alert('please give channel name');
     }
