@@ -432,7 +432,7 @@ function loadFileToChatInput() {
             let formData = new FormData();
             let text = media.name;
             //var clone = 
-            var targetl = "C:/Users/MUHAMMED%20FAISAL%20KC/Documents/GitHub/whatsin/upload/gallery/";
+            var targetl = "/upload/gallery/";
             formData.append('media', media);
             xttp.open("POST", targetl);
             xttp.setRequestHeader("Content-Type", "multipart/form-data");
