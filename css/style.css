@@ -219,13 +219,21 @@ section {
     color:#00838f;
     cursor: pointer;
 }
-
+.functional-button {
+    color: white;
+    background-color: #00838f;
+    padding: 11px;
+    border-radius: 50%;
+    cursor:pointer;
+    margin: 3px;
+}
 #emoticon-button {
     color: white;
     background-color: #00838f;
     padding: 11px;
     border-radius: 50%;
     cursor:pointer;
+    margin: 3px;
 }
 #message-input:hover,#message-input:focus {
     outline: none;
@@ -383,4 +391,27 @@ section {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+}
+/* ---------------- Attach file Area ------------------ */
+#attach-area {
+    position: fixed;
+    bottom: 70px;
+    left: 420px;
+    
+}
+
+.attach-button {
+    color: white;
+    background-color: #00838f;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.attach-tool-list {
+    list-style-type: none;
+    display: inherit;
+    display: flex;
+    flex-direction: column-reverse;
 }
