@@ -37,11 +37,32 @@
                 <p id="select-channel">Select a channel to start massaging.</p>
             </div>
             <div id="input-area">
+                <a class="material-icons button functional-button" id="attach-button">attach_file</a>
                 <a class="material-icons button" id="emoticon-button">insert_emoticon</a>
                 <!-- message typing area -->
                 <input disabled id="message-input" name="message-input" placeholder="select channel to type message" type="text" autocomplete="off" autofocus minlength="1" maxlength="500"/>
                 <!-- button to send message -->
                 <a class="material-icons button" id="send-button">send</a>
+            </div>
+            <div id="attach-area" style="display: none;">
+                <ul class="attach-tool-list">
+                    <li>
+                        <input type="file" id="get-file" accept="image/*" style="display: none;" multiple onchange="loadFileToChatInput()">
+                        <a class="material-icons button attach-button" id="gallery-button">image</a>
+                    </li>
+                    <li>
+                        <a class="material-icons button attach-button" id="camera-button">photo_camera</a>
+                    </li>
+                    <li>
+                        <a class="material-icons button attach-button" id="document-button">description</a>
+                    </li>
+                    <li>
+                        <a class="material-icons button attach-button" id="contact-button">person</a>
+                    </li>
+                    <li>
+                        <a class="material-icons button attach-button" id="location-button">room</a>
+                    </li>
+                </ul>
             </div>
             <div id="emoji-area" style="display: none;">
                 <div id="emoji-header">
