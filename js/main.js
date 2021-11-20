@@ -280,16 +280,37 @@ function showMessages() {
             }
             let currentMessageHtmlString;
             if (message.own) {
-                currentMessageHtmlString =
+                if(typeof message.text == 'object') {
+                    var image = document.createElement("img");
+                    image.style.width = '200px';
+                    image.style.height = '300px';
+                    image.setAttribute("type", "image/png");
+                    currentMessageHtmlString1 =
                     `<div class="message outgoing-message">
                         <div class="message-wrapper">
                             <div class="message-content">
-                                <p>` + message.text + `</p>
+                            <img style="width:200px; height:auto;" src="/Users/MUHAMMED%20FAISAL%20KC/Documents/GitHub/whatsin/upload/gallery/`+ message.text.fname +`"/>
                             </div>
                             <i class="material-icons">account_circle</i>
                         </div>
                         <span class="timestamp">` + messageTime+ `</span>
                     </div>`
+                    chatArea.innerHTML+= currentMessageHtmlString1;
+                    console.log(currentMessageHtmlString1)
+                    //$('#chat-area').append(currentMessageHtmlString1);
+                } else {
+                    currentMessageHtmlString =
+                        `<div class="message outgoing-message">
+                            <div class="message-wrapper">
+                                <div class="message-content">
+                                    <p>` + message.text + `</p>
+                                </div>
+                                <i class="material-icons">account_circle</i>
+                            </div>
+                            <span class="timestamp">` + messageTime+ `</span>
+                        </div>`
+                    chatArea.innerHTML += currentMessageHtmlString;
+                }
             } else {
                 currentMessageHtmlString =
                     `<div class="message incoming-message">
@@ -302,8 +323,9 @@ function showMessages() {
                         </div>
                         <span class="timestamp">` + messageTime + `</span>
                     </div>`
+                chatArea.innerHTML += currentMessageHtmlString;
             }
-            chatArea.innerHTML += currentMessageHtmlString;
+            
         }
     });
     chatArea.scrollTop = chatArea.scrollHeight;
@@ -369,3 +391,100 @@ document.getElementById('emoji-list').onmouseup = function(){
     document.getElementById('send-button').style.color = '#00838f';
     document.getElementById('message-input').focus();
 };
+
+// ------------------ Attach images and files ------------------ 
+
+// to display and disappear attach area when click on attach file button
+function toggleAttachArea() {
+    let attachArea = document.getElementById('attach-area');
+    if (attachArea.style.display === 'none') {
+        attachArea.style.display = 'flex';
+    } else {
+        attachArea.style.display = 'none';
+    }
+}
+
+document.getElementById('attach-button').addEventListener('click', toggleAttachArea);
+// to open image folder
+document.getElementById('gallery-button').addEventListener("click", getFile);
+
+function getFile() {
+    document.getElementById('get-file').click();
+}
+
+//document.getElementById('get-file').addEventListener('onchange', loadFileToChatInput)
+
+
+
+
+
+function loadFileToChatInput() {
+    var x = document.getElementById('get-file');
+    let attachArea = document.getElementById('attach-area');
+    if (!!x.files.length) {
+        console.log('file selected')
+        const createdBy = "Faisal";
+        const channel = selectedChannel.id;
+        const own = true;
+        for (var i = 0; i < x.files.length; i++) {
+            var xttp = new XMLHttpRequest();
+            let media = x.files[i];
+            let formData = new FormData();
+            let text = media.name;
+            //var clone = 
+            var targetl = "C:/Users/MUHAMMED%20FAISAL%20KC/Documents/GitHub/whatsin/upload/gallery/";
+            formData.append('media', media);
+            xttp.open("POST", targetl);
+            xttp.setRequestHeader("Content-Type", "multipart/form-data");
+            xttp.send(formData);
+            console.log(formData);
+            //('/Users/MUHAMMED%20FAISAL%20KC/Documents/GitHub/whatsin/upload/gallery/',
+            
+            //image.src = URL.createObjectURL(event.target.files[i]);
+            console.log(media.slice(0, media.size, media.type));
+            console.log(text);
+            const message = new Message(createdBy, channel, own, text);
+            /*
+            selectedChannel.messages.push(message);
+            console.log(image.src);
+            attachArea.style.display = 'none';
+            showMessages();
+            sortChannels();
+            displayChannels();
+            */
+            //chatArea.innerHTML+= `<img src="`+filePath+`">`;
+        }
+    } else {
+        console.log('file not selected');
+        /*
+        var nofile = 'no files selected';
+        $('#message-input') .val(nofile);  
+        */
+    }
+}
+
+function loadCamera() {
+    let chatArea = document.getElementById('chat-area');
+    var front = false;
+    var video = document.createElement('video');
+    video.setAttribute('playsinline', '');
+    video.setAttribute('autoplay', '');
+    video.setAttribute('muted','');
+    video.style.width = '300px';
+    video.style.height = '300px';
+    video.style.alignItems = 'right';
+    chatArea.append(video);
+    function frontCam() { front = !front; };
+    frontCam();
+    var constraints = { video: {facingMode: (front? "user" : "environment")}};
+    navigator.mediaDevices.getUserMedia(constraints)
+    .then(function(mediaStream) { 
+        video.srcObject = mediaStream;
+        video.onloadedmetadata = function(e) {
+            video.play();
+        };
+    })
+
+    .catch(function(err) {console.log(err.name + ": " + err.message); })
+}
+document.getElementById('camera-button').addEventListener("click", loadCamera);
