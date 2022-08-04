@@ -406,7 +406,7 @@ function toggleAttachArea() {
 
 document.getElementById('attach-button').addEventListener('click', toggleAttachArea);
 // to open image folder
-document.getElementById('gallery-button').addEventListener("click", getFile);
+//document.getElementById('gallery-button').addEventListener("click", getFile);
 
 function getFile() {
     document.getElementById('get-file').click();
@@ -487,4 +487,4 @@ function loadCamera() {
 
     .catch(function(err) {console.log(err.name + ": " + err.message); })
 }
-document.getElementById('camera-button').addEventListener("click", loadCamera);
+//document.getElementById('camera-button').addEventListener("click", loadCamera);
