@@ -527,15 +527,14 @@ document.getElementById('map-share').addEventListener("click", shareMap);
 let mapLink= 'india';
 let inputMap
 function showEmbededMap() {
-    console.log(MY_AP)
-    /*
+    var MY_AP = 'AIzaSyBjd6t8OG2GEn-GlwYprfwLAl4VJHtHqW0'
     mapLink = 'india';
     inputMap = document.getElementById('map-search').value;
     let plusInputMap = inputMap.replace(/ /g,'+');
     console.log(plusInputMap);
     mapLink = plusInputMap;
     document.getElementById('map-iframe').setAttribute('src', 'https://www.google.com/maps/embed/v1/place?key=MY_AP&q='+mapLink);
-    */
+
 }
 
 function shareMap() {
