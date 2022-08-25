@@ -518,6 +518,7 @@ function toggleMapModal () {
         mapModal.style.display = 'flex';
     } else {
         mapModal.style.display = 'none';
+        document.getElementById('attach-area').style.display = 'none';
     }
     
 }
