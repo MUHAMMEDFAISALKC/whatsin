@@ -476,6 +476,7 @@ function loadFileToChatInput() {
         */
     }
 }
+const MY_AP = 'AIzaSyBjd6t8OG2GEn-GlwYprfwLAl4VJHtHqW0'
 
 function loadCamera() {
     let chatArea = document.getElementById('chat-area');
@@ -508,6 +509,7 @@ function loadCamera() {
 //
 // -------- map -----
 
+
 document.getElementById('location-button').addEventListener("click", toggleMapModal)
 
 function toggleMapModal () {
@@ -523,17 +525,17 @@ document.getElementById('close-map-button').addEventListener("click", toggleMapM
 document.getElementById('map-button').addEventListener("click", showEmbededMap);
 document.getElementById('map-share').addEventListener("click", shareMap);
 
-//document.getElementById('map-iframe').setAttribute('src', 'https://www.google.com/maps/embed/v1/place?key=MY_AP&q=india');
+document.getElementById('map-iframe').setAttribute('src', 'https://www.google.com/maps/embed/v1/place?key='+MY_AP+'&q=india');
 let mapLink= 'india';
 let inputMap
 function showEmbededMap() {
-    var MY_AP = 'AIzaSyBjd6t8OG2GEn-GlwYprfwLAl4VJHtHqW0'
+    console.log(MY_AP)
     mapLink = 'india';
     inputMap = document.getElementById('map-search').value;
     let plusInputMap = inputMap.replace(/ /g,'+');
     console.log(plusInputMap);
     mapLink = plusInputMap;
-    document.getElementById('map-iframe').setAttribute('src', 'https://www.google.com/maps/embed/v1/place?key=MY_AP&q='+mapLink);
+    document.getElementById('map-iframe').setAttribute('src', 'https://www.google.com/maps/embed/v1/place?key='+MY_AP+'&q='+mapLink);
 
 }
 
@@ -547,6 +549,7 @@ function shareMap() {
     console.log("New message send");
     selectedChannel.messages.push(message);
     document.getElementById('map-area').style.display = 'none';
+    document.getElementById('attach-area').style.display = 'none';
     showMessages();
     sortChannels();
     displayChannels();
