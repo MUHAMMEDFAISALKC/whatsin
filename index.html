@@ -82,6 +82,30 @@
                 </div>
             </div>
         </section>
+        <section id="map-area" style="display: none;">
+            <div id="map-header">
+                <span id="map-head"> Location </span>
+                <a class="material-icons button" id="close-map-button">cancel</a>
+            </div>
+            <div>
+                <div id="map-view">
+                    <iframe
+                        id= "map-iframe"
+                        loading="lazy"
+                        allowfullscreen>
+                    </iframe>
+                    <!--
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBjd6t8OG2GEn-GlwYprfwLAl4VJHtHqW0&q=Mirza+Residency">
+                    -->
+
+                </div>
+                <div id="map-search-area">
+                    <input type="text" id="map-search" name="map-search-input" value="india">
+                    <input type="submit" class="btn button" id="map-button" value="Search">
+                    <input type="submit" class="btn button" id="map-share" value="Share">
+                </div>
+            </div>
+        </section>
     </body>
     <script src="js/main.js"></script>
     <script src="js/messages.js"></script>
