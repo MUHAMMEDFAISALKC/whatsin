@@ -415,3 +415,93 @@ section {
     display: flex;
     flex-direction: column-reverse;
 }
+
+
+/*  ---------------- MAP --------------- */
+#map-area {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 400px);
+    height: calc(100% - 130px);
+    top: 65px;
+    bottom: 65px;
+    right:0px;
+    align-content:center;
+    background-color:white;
+    box-sizing: border-box;
+    border: lightgray;
+}
+#map-iframe {
+    width: 630px;
+    height: 300px;
+    border:0;
+}
+#map-view {
+    align-items: center;
+}
+#map-search-area {
+    display: flex;
+    height: 50px;
+    width: auto;
+    align-items: center; 
+    justify-content: center;
+    background-color: #eeeeee; 
+
+}
+#map-search {
+    height: 30px;
+    width: 300px;
+    margin-left: 5px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 0 10px #9ecaed;
+}
+#map-listing {
+    background-color:#eeeeee;
+    height: 125px;
+    width: auto;
+    border: 1px solid lightgray;
+    box-sizing: border-box;
+}
+#map-header {
+    height: 30px;
+    line-height: 30px;
+    margin-left: 20px;
+    margin-right: 15px;
+    align-content: center;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+#map-head {
+    color:#00838f;
+    font-weight: bold;
+}
+
+.btn {
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    font-size: 18px;
+    background-color:#00838f;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    min-width: 70px;
+    max-width: fit-content;
+    height: 30px;
+}
+#myCanvas {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #00838f;
+}
+
+.map-image {
+    height: 90px; 
+    width: 150px; 
+    box-shadow: 0 0 10px #9ecaed;
+}
