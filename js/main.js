@@ -523,7 +523,7 @@ document.getElementById('close-map-button').addEventListener("click", toggleMapM
 document.getElementById('map-button').addEventListener("click", showEmbededMap);
 document.getElementById('map-share').addEventListener("click", shareMap);
 
-document.getElementById('map-iframe').setAttribute('src', 'https://www.google.com/maps/embed/v1/place?key=$MY_AP&q=india');
+document.getElementById('map-iframe').setAttribute('src', 'https://www.google.com/maps/embed/v1/place?key=MY_AP&q=india');
 let mapLink= 'india';
 let inputMap
 function showEmbededMap() {
@@ -532,7 +532,7 @@ function showEmbededMap() {
     let plusInputMap = inputMap.replace(/ /g,'+');
     console.log(plusInputMap);
     mapLink = plusInputMap;
-    document.getElementById('map-iframe').setAttribute('src', 'https://www.google.com/maps/embed/v1/place?key=$MY_AP&q='+mapLink);
+    document.getElementById('map-iframe').setAttribute('src', 'https://www.google.com/maps/embed/v1/place?key=MY_AP&q='+mapLink);
 }
 
 function shareMap() {
