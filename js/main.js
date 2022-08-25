@@ -399,6 +399,7 @@ function toggleAttachArea() {
     let attachArea = document.getElementById('attach-area');
     if (attachArea.style.display === 'none') {
         attachArea.style.display = 'flex';
+        toggleEmojiArea()
     } else {
         attachArea.style.display = 'none';
     }
