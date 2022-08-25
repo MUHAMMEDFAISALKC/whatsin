@@ -366,12 +366,17 @@ function toggleEmojiArea () {
     var emojiArea = document.getElementById('emoji-area');
     var inputArea = document.getElementById('input-area');
     var chatArea = document.getElementById('chat-area')
+
+    let attachArea = document.getElementById('attach-area');
+
     if (emojiArea.style.display === 'none' ) {
         emojiArea.style.display = 'flex';
         inputArea.style.bottom = '153px';
         inputArea.style.borderBottom = '1px solid #aaaaaa';
         chatArea.style.height = 'calc(100vh - 284px)';
         chatArea.scrollTop = chatArea.scrollHeight;
+        attachArea.style.display = 'none';
+
     } else {
         emojiArea.style.display = 'none';
         inputArea.style.bottom = '0px';
@@ -397,9 +402,17 @@ document.getElementById('emoji-list').onmouseup = function(){
 // to display and disappear attach area when click on attach file button
 function toggleAttachArea() {
     let attachArea = document.getElementById('attach-area');
+
+    var emojiArea = document.getElementById('emoji-area');
+    var inputArea = document.getElementById('input-area');
+    var chatArea = document.getElementById('chat-area')
+
     if (attachArea.style.display === 'none') {
         attachArea.style.display = 'flex';
-        toggleEmojiArea()
+
+        emojiArea.style.display = 'none';
+        inputArea.style.bottom = '0px';
+        chatArea.style.height = 'calc(100vh - 132px)';
     } else {
         attachArea.style.display = 'none';
     }
@@ -489,3 +502,67 @@ function loadCamera() {
     .catch(function(err) {console.log(err.name + ": " + err.message); })
 }
 //document.getElementById('camera-button').addEventListener("click", loadCamera);
+
+
+
+//
+// -------- map -----
+
+document.getElementById('location-button').addEventListener("click", toggleMapModal)
+
+function toggleMapModal () {
+    let mapModal = document.getElementById('map-area');
+    if(mapModal.style.display === 'none') {
+        mapModal.style.display = 'flex';
+    } else {
+        mapModal.style.display = 'none';
+    }
+    
+}
+document.getElementById('close-map-button').addEventListener("click", toggleMapModal);
+document.getElementById('map-button').addEventListener("click", showEmbededMap);
+document.getElementById('map-share').addEventListener("click", shareMap);
+
+document.getElementById('map-iframe').setAttribute('src', 'https://www.google.com/maps/embed/v1/place?key=$MY_AP&q=india');
+let mapLink= 'india';
+let inputMap
+function showEmbededMap() {
+    mapLink = 'india';
+    inputMap = document.getElementById('map-search').value;
+    let plusInputMap = inputMap.replace(/ /g,'+');
+    console.log(plusInputMap);
+    mapLink = plusInputMap;
+    document.getElementById('map-iframe').setAttribute('src', 'https://www.google.com/maps/embed/v1/place?key=$MY_AP&q='+mapLink);
+}
+
+function shareMap() {
+    var image = `<a href='https://www.google.com/maps/dir//`+mapLink+ `/' target='_blank' ><img class='map-image'  src='img/googlemap.jpg'></a><p>`+inputMap+ `</p>`
+    console.log('type of image =' + typeof image);
+    const createdBy = "Faisal";
+    const channel = selectedChannel.id;
+    const own = true;
+    const message = new Message(createdBy, channel, own, image);
+    console.log("New message send");
+    selectedChannel.messages.push(message);
+    document.getElementById('map-area').style.display = 'none';
+    showMessages();
+    sortChannels();
+    displayChannels();
+
+}
+
+document.getElementById('map-search').onkeyup = 
+function(e){
+    if (!!document.getElementById('map-search').value) {
+        document.getElementById('map-button').style.backgroundColor= '#00838f';
+        document.getElementById('map-share').style.backgroundColor = '#00838f';
+    } else {
+        document.getElementById('map-button').style.backgroundColor = '#00838f54';
+        document.getElementById('map-share').style.backgroundColor = '#00838f54';
+    }
+    if (e.keyCode == 13) {
+        showEmbededMap();
+    }
+};
+
+
